@@ -1,0 +1,21 @@
+{
+  "name": "week1",
+  "version": "1.0.0",
+  "description": "Node.js up and running.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ghada-Messaoudi/ITC230-Advanced_JavaScript.git"
+  },
+  "keywords": [],
+  "author": "Ghada Messaoudi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ghada-Messaoudi/ITC230-Advanced_JavaScript/issues"
+  },
+  "homepage": "https://github.com/Ghada-Messaoudi/ITC230-Advanced_JavaScript#readme",
+  "dependencies": {}
+}
