@@ -1,4 +1,6 @@
 var http = require("http");
+var booksModule = require("./module.js");
+
 http.createServer(function (req, res) {
   var fs = require("fs");
   var path = req.url.toLowerCase();
@@ -24,6 +26,18 @@ http.createServer(function (req, res) {
         res.end();
       });
       break;
+    case '/get':
+      var book = booksModule.get(req.isbn)
+      res.writeHead(200, {
+        'Content-Type': 'text/plain'
+      });
+      res.end('Searching for ' + req.isbn + ' : \n' + book);
+    case '/delete':
+      var book = booksModule.deleteB(req.isbn)
+      res.writeHead(200, {
+        'Content-Type': 'text/plain'
+      });
+      res.end(req.isbn+' deleted.');
     default:
       res.writeHead(404, {
         'Content-Type': 'text/html'
