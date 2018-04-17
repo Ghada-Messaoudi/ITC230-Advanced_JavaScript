@@ -1,5 +1,6 @@
 var http = require("http");
 var booksModule = require("./module.js");
+const querystring = require('querystring');
 
 http.createServer(function (req, res) {
   var fs = require("fs");
@@ -7,7 +8,9 @@ http.createServer(function (req, res) {
   if (path == '/home') {
     path = '/';
   }
+  console.log(path)
   switch (path) {
+
     case '/':
       fs.readFile("public/home.html", function (err, data) {
         res.writeHead(200, {
@@ -17,6 +20,7 @@ http.createServer(function (req, res) {
         res.end();
       });
       break;
+
     case '/about':
       fs.readFile("public/about.html", function (err, data) {
         res.writeHead(200, {
@@ -26,18 +30,33 @@ http.createServer(function (req, res) {
         res.end();
       });
       break;
+
     case '/get':
-      var book = booksModule.get(req.isbn)
-      res.writeHead(200, {
-        'Content-Type': 'text/plain'
+    booksModule.getB(req.querystring("isbn"), function (err, data) {
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.write('Searching for ' + req.querystring("isbn") + ' : \n' + data);
+        res.end();
       });
-      res.end('Searching for ' + req.isbn + ' : \n' + book);
+      break;
+
     case '/delete':
-      var book = booksModule.deleteB(req.isbn)
+      var book = booksModule.deleteB()
       res.writeHead(200, {
         'Content-Type': 'text/plain'
       });
-      res.end(req.isbn+' deleted.');
+      res.write(req.isbn + ' deleted.')
+      res.end();
+      break;
+
+    case '/getall':
+      res.writeHead(200, {
+        'Content-Type': 'application/json'
+      });
+      res.end(booksModule.getAll())
+      break;
+
     default:
       res.writeHead(404, {
         'Content-Type': 'text/html'

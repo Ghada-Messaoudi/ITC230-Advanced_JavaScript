@@ -17,5 +17,7 @@
     "url": "https://github.com/Ghada-Messaoudi/ITC230-Advanced_JavaScript/issues"
   },
   "homepage": "https://github.com/Ghada-Messaoudi/ITC230-Advanced_JavaScript#readme",
-  "dependencies": {}
+  "dependencies": {
+    "querystring": "^0.2.0"
+  }
 }
