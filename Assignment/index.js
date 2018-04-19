@@ -50,14 +50,15 @@ http.createServer(function (req, res) {
 
     case '/delete':
       var isbn = path[1].split("=")[1]
-      var book = JSON.parse(booksModule.getB(isbn));
-      booksModule.deleteB(isbn, function (err, data) {
-        res.writeHead(200, {
-          'Content-Type': 'text/plain'
-        });
-        res.write(data.msg)
-        res.end();
-      })
+      var result = JSON.parse(booksModule.deleteB(isbn))
+      res.writeHead(200, {
+        'Content-Type': 'text/plain'
+      });
+      if (result.success) {
+        res.end(result.title + " removed.");
+      } else {
+        res.end("Not Found");
+      }
       break;
 
     case '/getall':
