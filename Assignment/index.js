@@ -1,6 +1,5 @@
 var http = require("http");
 var booksModule = require("./module.js");
-const querystring = require('querystring');
 
 http.createServer(function (req, res) {
   var fs = require("fs");
@@ -8,8 +7,9 @@ http.createServer(function (req, res) {
   if (path == '/home') {
     path = '/';
   }
-  console.log(path)
-  switch (path) {
+  path = path.split("?")
+  route = path[0]
+  switch (route) {
 
     case '/':
       fs.readFile("public/home.html", function (err, data) {
@@ -32,22 +32,32 @@ http.createServer(function (req, res) {
       break;
 
     case '/get':
-    booksModule.getB(req.querystring("isbn"), function (err, data) {
+      var isbn = path[1].split("=")[1]
+      var book = JSON.parse(booksModule.getB(isbn))
+      if (book.msg == undefined) {
         res.writeHead(200, {
           'Content-Type': 'application/json'
         });
-        res.write('Searching for ' + req.querystring("isbn") + ' : \n' + data);
-        res.end();
-      });
+        res.write('Searching for ' + isbn + ' : \n' + book.title + " : " + book.description);
+      } else {
+        res.writeHead(404, {
+          'Content-Type': 'application/json'
+        });
+        res.write('Searching for ' + isbn + ' : \n' + book.msg);
+      }
+      res.end();
       break;
 
     case '/delete':
-      var book = booksModule.deleteB()
-      res.writeHead(200, {
-        'Content-Type': 'text/plain'
-      });
-      res.write(req.isbn + ' deleted.')
-      res.end();
+      var isbn = path[1].split("=")[1]
+      var book = JSON.parse(booksModule.getB(isbn));
+      booksModule.deleteB(isbn, function (err, data) {
+        res.writeHead(200, {
+          'Content-Type': 'text/plain'
+        });
+        res.write(data.msg)
+        res.end();
+      })
       break;
 
     case '/getall':

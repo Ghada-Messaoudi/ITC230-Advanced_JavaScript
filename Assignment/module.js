@@ -48,15 +48,29 @@ exports.getB = (isbn) => {
     var b = books.find(function (book) {
         return book.isbn == isbn;
     })
+    if (b == null) {
+        return JSON.stringify({
+            msg: "Book Not Found."
+        })
+    }
     return JSON.stringify(b);
 };
 
-exports.deleteB = (req, res) => {
+exports.deleteB = (isbn) => {
     var bookD = books.find(function (book) {
-        if (book.isbn == req.headers.isbn) {
+        if (book.isbn == isbn) {
             return book
         }
     })
-    console.log(bookD)
-    books.delete(bookD)
+    if (bookD == null) {
+        return JSON.stringify({
+            msg: "Book Not Found."
+        })
+    } else {
+        var index = books.indexOf(bookD);
+        if (index > -1) {
+            books.splice(index, 1);
+        }
+        return JSON.stringify({msg: bookD.title+" removed"});
+    }
 };
