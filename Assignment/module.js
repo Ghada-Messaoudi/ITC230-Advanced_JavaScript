@@ -41,7 +41,7 @@ var books = [{
 ]
 
 exports.getAll = () => {
-    return JSON.stringify(books)
+    return books;
 };
 
 exports.getB = (isbn) => {
@@ -49,11 +49,14 @@ exports.getB = (isbn) => {
         return book.isbn == isbn;
     })
     if (b == null) {
-        return JSON.stringify({
-            msg: "Book Not Found."
-        })
+        return {
+            success: false
+        }
     }
-    return JSON.stringify(b);
+    return {
+        success: true,
+        book: b
+    };
 };
 
 exports.deleteB = (isbn) => {
@@ -63,18 +66,20 @@ exports.deleteB = (isbn) => {
         }
     })
     if (bookD == null) {
-        return JSON.stringify({
-            success: false
-        })
+        return {
+            success: false,
+            length: books.length
+        }
     } else {
         var index = books.indexOf(bookD);
         if (index > -1) {
             books.splice(index, 1);
         }
-        return JSON.stringify({
+        return {
             success: true,
-            title: bookD.title
-        });
+            title: bookD.title,
+            length: books.length
+        };
     }
 };
 
@@ -84,7 +89,6 @@ exports.deleteB = (isbn) => {
 //             return {title:book.title,index:index}
 //         }
 //     })
-//     console.log("result : ",result)
 //     if (result.index > -1) {
 //         books.splice(result.index, 1);
 //         return result;
