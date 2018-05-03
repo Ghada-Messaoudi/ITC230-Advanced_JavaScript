@@ -13,6 +13,7 @@
 <body>
     <div class="wrap">
         <h1>Home Page</h1>
+        <h3>Find a Book</h3>
         <div class="search">
             <form action="/detail" method="post">
                 <input type="text" class="searchTerm" name="isbn" placeholder="What are you looking for?">
@@ -29,6 +30,13 @@
                 {{/each}}
             </ol>
         </div>
+        <h3>Add a Book</h3>
+        <form action="/add" method="post">
+            <input type="text" class="searchTerm" name="isbn" placeholder="ISBN">
+            <input type="text" class="searchTerm" name="title" placeholder="Title">
+            <input type="text" class="searchTerm" name="author" placeholder="Author">
+            <input type="submit" value="add">
+        </form>
         <div>
             <a href="about">
                 About

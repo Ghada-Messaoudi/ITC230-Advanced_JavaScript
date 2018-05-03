@@ -40,6 +40,21 @@ let books = [{
 }
 ]
 
+exports.addB = (book) => {
+	let result = books.find((b) => {
+		return b.isbn == book.isbn
+	})
+	if (result == null) {
+		books.push(book)
+		return {
+			success: true
+		}
+	}
+	return {
+		success: false
+	}
+}
+
 exports.getAll = () => {
 	return books
 }

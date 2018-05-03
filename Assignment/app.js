@@ -39,6 +39,13 @@ app.get("/getAll", (req, res) => {
 	res.end(JSON.stringify(booksModule.getAll()))
 })
 
+app.post("/add", (req, res) => {
+	let result = booksModule.addB(req.body)
+	res.render("add", {
+		success: result.success
+	})
+})
+
 app.get("/get/:isbn", (req, res) => {
 	let isbn = req.params.isbn
 	let result = booksModule.getB(isbn)
