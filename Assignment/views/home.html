@@ -22,6 +22,7 @@
         </div>
         <div>
             <h3>Books:</h3>
+            {{#if books}}
             <ol>
                 {{#each books}}
                 <li>
@@ -29,6 +30,9 @@
                 </li>
                 {{/each}}
             </ol>
+            {{else}}
+            <h3>No Books in the DataBase.</h3>
+            {{/if}}
         </div>
         <h3>Add a Book</h3>
         <form action="/add" method="post">

@@ -2,7 +2,7 @@
 
 const express = require("express")
 const app = express()
-let booksModule = require("./module.js")
+let booksModule = require("./DB-module.js")
 
 app.set("port", process.env.PORT || 8080)
 
@@ -18,11 +18,14 @@ app.engine(".html", handlebars({
 app.set("view engine", ".html")
 
 // send static file as response
-app.get("/", (req, res) => {
-	let books = booksModule.getAll()
-	res.render("home", {
-		books: books
-	})
+app.get("/", (req, res, next) => {
+	booksModule.getAll().then((items) => {
+		res.render('home', {
+			books: items
+		});
+	}).catch((err) => {
+		return next(err);
+	});
 })
 
 app.get("/home", (req, res) => {
@@ -34,15 +37,23 @@ app.get("/about", (req, res) => {
 	res.sendFile(__dirname + "/public/about.html")
 })
 
-app.get("/getAll", (req, res) => {
-	res.type("application/json")
-	res.end(JSON.stringify(booksModule.getAll()))
+app.get("/getAll", (req, res, next) => {
+	booksModule.getAll().then((items) => {
+		res.type("application/json")
+		res.end(JSON.stringify(items))
+	}).catch((err) => {
+		return next(err);
+	});
+
 })
 
-app.post("/add", (req, res) => {
-	let result = booksModule.addB(req.body)
-	res.render("add", {
-		success: result.success
+app.post("/add", (req, res, next) => {
+	booksModule.addB(req.body, (err, result) => {
+		if (!err)
+			res.render("add", {
+				success: result.success
+			})
+		else return next();
 	})
 })
 
@@ -69,11 +80,16 @@ app.get("/delete/:isbn", (req, res) => {
 	})
 })
 
-app.post("/detail", (req, res) => {
-	let result = booksModule.getB(req.body.isbn)
-	res.render("detail", {
-		isbn: req.body.isbn,
-		result: result
+app.post("/detail", (req, res, next) => {
+	booksModule.getB(req.body.isbn)
+	.then((result)=>{
+		console.log(result)
+		res.render("detail", {
+			isbn: req.body.isbn,
+			result: result
+		})
+	}).catch((err)=>{
+		return next(err)
 	})
 })
 
