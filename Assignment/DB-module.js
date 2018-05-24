@@ -1,19 +1,5 @@
 let books = require("./models/book");
 
-exports.addB = (book) => {
-     books.create(book, (err, result) => {
-        if (err) {
-            return {
-                success: false
-            }
-        }
-        return {
-            res: result,
-            success: true
-        }
-    })
-}
-
 exports.getAll = () => {
     return books.find({}, (err, res) => {
         if (err) {
@@ -30,25 +16,45 @@ exports.getB = (isbn) => {
         if (err) return {
             success: false
         };
-        return {
-            success: true,
-            book: item
-        }
+        return item
     });
+}
+
+exports.addB = (book) => {
+    return books.create(book, (err, result) => {
+        if (err) {
+            return {
+                success: false
+            }
+        }
+        return {
+            res: result,
+            success: true
+        }
+    })
 }
 
 exports.deleteB = (isbn) => {
     return books.deleteOne({
         'isbn': isbn
-    }, (err, res) => {
+    }, (err, book) => {
         if (err) return {
             success: false,
-            length: books.length
+            msg: 'Course not deleted',
+            err: err
         }
-        return {
-            success: true,
-            title: res.book.title,
-            length: books.length
-        }
+        return books.count({}, (err,res)=>{
+            if (err) return {
+                success: false,
+                msg: ' Course deleted but count had error!',
+                err: err
+            }
+            return {
+                success: true,
+                length: res,
+                title: book.title
+            }
+        })
     })
+
 }

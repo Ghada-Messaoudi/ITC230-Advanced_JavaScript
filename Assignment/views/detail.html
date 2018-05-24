@@ -8,20 +8,19 @@
 
 <body>
     <div class="container">
-        {{#if result.success}}
-        <h2>Details for {{isbn}}</h2>
-        <li>Title: {{ result.book.title }}</li>
-        <li>Author: {{ result.book.author }}</li>
-        <li>Description: {{ result.book.description }}</li>
-        <h5>
-            <a href="/delete/{{isbn}}">Delete {{ result.book.title }}</a>
-        </h5>
-        {{else}} <h2>Book Not Found</h2> {{/if}}
+        {{#if book}}
+        <h2>Details for {{book.isbn}}</h2>
+        <li>Title: {{ book.title }}</li>
+        <li>Author: {{ book.author }}</li>
+        <li>Description: {{ book.description }}</li>
+        <a href="/books/delete/{{isbn}}">Delete {{book.title}}</a>
+        {{else}}
+        <h2>Book Not Found</h2> {{/if}}
         <div>
-                <a href="home">
-                    Back
-                </a>
-            </div>
+            <a href="home">
+                Back
+            </a>
+        </div>
     </div>
 </body>
 
