@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        #wrapper{
+            display: flex;
+            width: 100%;
+            margin: 10px;
+        }
+
+        #bookList{
+            width: 30%;
+        }
+
+        #bookList li{
+            cursor: pointer;
+        }
+
+        #bookDetails{
+            width: 70%;
+            padding: 5px 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root" />
+
+    <script type="text/babel">
+
+        const ListItems = ({books,show}) =>{
+            const items = books.map((book) =>{
+                return <li id={book._id} key={book._id} onClick={show}> {book.title} </li>;
+            });
+            return <span id="bookList">
+                        <h2>Books</h2><ul>{items}</ul>
+                    </span>
+        }
+
+        const Details = (props) => {
+            return (
+                <span id="bookDetails">
+                    <h2>Details</h2>
+                    <form>
+                        <input type="text" name="title" placeholder="title" value={props.book.title || ""} className="form-control"/>
+                        <input type="text" name="author" placeholder="author" value={props.book.author || ""} className="form-control"/>
+                    </form>
+                </span>
+            )
+        }
+
+        class BookStore extends React.Component {
+            constructor(props) {  
+                super(props);  
+                this.state = {
+                    books: {{{books}}},
+                    selected: {} 
+                }
+            } 
+
+            showBookDetails(event){
+                let selectedBook = this.state.books.find((book) => {
+                    return book._id == event.target.id;
+                });
+                this.setState({selected: selectedBook});
+            }
+            
+            render() {
+                return (
+                    <div id="wrapper">
+                        <ListItems books = {this.state.books} show={this.showBookDetails.bind(this)} />
+                        <Details book= {this.state.selected} />
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<BookStore />,  document.getElementById('root'));
+
+    </script>
+</body>
+
+</html>

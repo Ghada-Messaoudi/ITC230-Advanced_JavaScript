@@ -27,6 +27,8 @@
     "express-handlebars": "^3.0.0",
     "mocha": "^5.1.1",
     "mongoose": "^5.0.17",
-    "querystring": "^0.2.0"
+    "querystring": "^0.2.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   }
 }

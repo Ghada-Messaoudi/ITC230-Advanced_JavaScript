@@ -7,10 +7,12 @@ module.exports = function (app) {
         res.redirect("/")
     })
 
+
+    ///React modif
     app.get("/", (req, res, next) => {
         booksModule.getAll().then((items) => {
-            res.render('home', {
-                books: items
+            res.render('index', {
+                books: JSON.stringify(items)
             });
         }).catch((err) => {
             return next(err);
@@ -62,7 +64,7 @@ module.exports = function (app) {
             'isbn': req.params.isbn
         }, (err, result) => {
             if (err) {
-                res.render("delete",{
+                res.render("delete", {
                     success: false
                 })
             }
