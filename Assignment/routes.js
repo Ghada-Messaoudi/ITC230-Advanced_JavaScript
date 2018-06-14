@@ -47,7 +47,7 @@ module.exports = function (app) {
     })
 
     app.post("/books", (req, res, next) => {
-        books.create(req.body, (err, result) => {
+        books.findOneAndUpdate(req.body, (err, result) => {
             if (err) {
                 return next(err)
             } else {
